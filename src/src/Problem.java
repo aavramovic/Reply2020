@@ -21,11 +21,11 @@ public class Problem {
         Scanner scanner = new Scanner(new File("src/src/Input/" + fileIn));
         x = Integer.parseInt(scanner.next());//5
         y = Integer.parseInt(scanner.next());//3
-        map = new Character[x][y];
+        map = new Character[y][x];
         for (int i = 0; i < y; i++) {
             String line = scanner.next();
             for (int j = 0; j < x; j++) {
-                map[j][i] = line.charAt(j);
+                map[i][j] = line.charAt(j);
             }
         }
         noOfDevelopers = Integer.parseInt(scanner.next());
@@ -44,7 +44,7 @@ public class Problem {
         for (int i = 0; i < noOfProjectManagers; i++) {
             String company = scanner.next();
             int bonusPotential = Integer.parseInt(scanner.next());
-            ProjectMenager projectMenager = new ProjectMenager(noOfDevelopers + i, company, bonusPotential);
+            ProjectMenager projectMenager = new ProjectMenager(i, company, bonusPotential);
             projectMenagers.add(projectMenager);
         }
     }
@@ -54,14 +54,14 @@ public class Problem {
         int counterProjectMenager = 0;
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                if (map[j][i] == "_".charAt(0) && counterDeveloper <= noOfDevelopers) {
+                if (map[i][j] == "_".charAt(0) && counterDeveloper < noOfDevelopers) {
                     developers.get(counterDeveloper).x = j;
                     developers.get(counterDeveloper).y = i;
                     counterDeveloper++;
                 }
-                if (map[j][i] == "M".charAt(0) && counterProjectMenager <= noOfProjectManagers) {
-                    developers.get(counterProjectMenager).x = j;
-                    developers.get(counterProjectMenager).y = i;
+                if (map[i][j] == "M".charAt(0) && counterProjectMenager < noOfProjectManagers) {
+                    projectMenagers.get(counterProjectMenager).x = j;
+                    projectMenagers.get(counterProjectMenager).y = i;
                     counterProjectMenager++;
                 }
             }
@@ -72,17 +72,20 @@ public class Problem {
         FileWriter fileWriter = new FileWriter("src/src/Output/" + fileIn);
         for (Developer d : developers) {
             if (d.x == -1)
-                fileWriter.write("X\n");
+                fileWriter.write("X");
             else {
-                fileWriter.write(d.x + " " + d.y + "\n");
+                fileWriter.write(d.x + " " + d.y);
             }
+            fileWriter.write("\n");
         }
         for (ProjectMenager p : projectMenagers) {
             if (p.x == -1)
-                fileWriter.write("X\n");
+                fileWriter.write("X");
             else {
-                fileWriter.write(p.x + " " + p.y + "\n");
+                fileWriter.write(p.x + " " + p.y);
             }
+            if (p.id != noOfProjectManagers - 1)
+                fileWriter.write("\n");
         }
         fileWriter.close();
     }
